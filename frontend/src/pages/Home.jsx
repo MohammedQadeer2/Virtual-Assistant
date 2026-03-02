@@ -125,19 +125,6 @@ function Home() {
       }
     }, 1000);
 
-    const safeRecognition = () => {
-      if (!isSpeakingRef.current && !isRecognizingRef.current) {
-        try {
-          recognition.start();
-          console.log("Recognition requested to start");
-        } catch (err) {
-          if (err.name !== "InvalidStateError") {
-            console.error("Start error:", err);
-          }
-        }
-      }
-    }
-
     recognition.onstart = () => {
       isRecognizingRef.current = true;
       setListening(true);
@@ -193,19 +180,18 @@ function Home() {
         isRecognizingRef.current = false
         setListening(false)
         const data = await getGeminiResponse(transcript)
+
+        // 🔥 update history immediately in frontend
+        setUserData(prev => ({
+          ...prev,
+          history: [...prev.history, transcript]
+        }))
+
         handleCommand(data)
         setAiText(data.response)
         setUserText("")
-        speak(data.response)
       }
     };
-
-    const greeting = new SpeechSynthesisUtterance(
-      `Hello ${userData.name}, what can I help you with?`
-    );
-    greeting.lang = "hi-IN";
-    window.speechSynthesis.speak(greeting);
-
     return () => {
       isMounted = false
       clearTimeout(startTimeout)
@@ -231,12 +217,15 @@ function Home() {
   }, []);
 
   return (
-    <div className="w-full min-h-screen 
+    <div className="
+         w-full h-screen
          bg-gradient-to-b from-[#000000] via-[#010122] to-[#02023d]
-         flex justify-center items-center flex-col 
-         gap-6 sm:gap-8
-         px-4 sm:px-6 relative overflow-hidden">
-
+         flex flex-col lg:flex-row
+         items-center lg:items-center
+         justify-center
+         px-6
+         overflow-hidden"
+         >
       {/* Top Right Buttons */}
       {/* Desktop Buttons */}
       <div className="hidden lg:flex absolute top-6 right-6 gap-4 z-20">
@@ -296,7 +285,7 @@ function Home() {
           flex flex-col p-6 gap-6
           transition-transform duration-300
     ${menuOpen ? "translate-x-0" : "translate-x-full"}`}
-        >
+        >~
           {/* Close Button */}
           <div className="flex justify-between items-center">
             <h2 className="text-white text-lg font-semibold">Menu</h2>
@@ -338,25 +327,36 @@ function Home() {
           <div className="w-full h-[1px] bg-white/10"></div>
 
           {/* History Section */}
-          <div className="flex flex-col gap-3 overflow-y-auto">
-            <h3 className="text-white font-semibold text-sm tracking-wide">
+          {/* History Section */}
+          <div className="flex flex-col gap-3 max-h-[490px] overflow-y-auto pr-2 custom-scroll">
+
+            <h3 className="text-white font-semibold text-sm tracking-wide sticky top-0 bg-[#010122] py-1">
               History
             </h3>
 
+            {userData?.history?.length === 0 && (
+              <p className="text-gray-500 text-sm">No history yet</p>
+            )}
+
             {userData?.history?.map((his, index) => (
-              <span
+              <div
                 key={index}
-                className="text-gray-300 text-sm truncate hover:text-white transition cursor-pointer"
+                className="bg-white/5 px-3 py-2 rounded-lg 
+                 text-gray-300 text-sm 
+                 hover:bg-white/10 hover:text-white
+                 transition-all duration-300 
+                 cursor-pointer"
               >
                 {his}
-              </span>
+              </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Assistant Image */}
-      <div className="w-[220px] sm:w-[280px] md:w-[320px] 
+      {/* left side of home page in lg screen */}
+      <div className="flex flex-col items-center lg:w-1/2 lg:pl-20">
+        <div className="w-[220px] sm:w-[280px] md:w-[320px] 
            h-[320px] sm:h-[380px] md:h-[420px] 
            flex justify-center items-center 
            overflow-hidden rounded-3xl 
@@ -364,38 +364,50 @@ function Home() {
            border border-white/10
            transition-all duration-500 
            hover:scale-105 hover:shadow-blue-500/30">
-        <img
-          src={userData?.assistantImage}
-          alt="assistant"
-          className="w-full h-full object-cover"
-        />
+          <img
+            src={userData?.assistantImage}
+            alt="assistant"
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        {/* Name */}
+        <h1 className="text-white text-2xl sm:text-3xl font-bold text-center tracking-wider drop-shadow-lg">
+          I'm {userData?.assistantName}
+        </h1>
+        <button onClick={() => {
+          window.speechSynthesis.speak(
+            new SpeechSynthesisUtterance("Assistant activated")
+          );
+        }} className="">
+          Start Assistant
+        </button>
       </div>
 
-      {/* Name */}
-      <h1 className="text-white text-2xl sm:text-3xl font-bold text-center tracking-wider drop-shadow-lg">
-        I'm {userData?.assistantName}
-      </h1>
-      <div className=" flex justify-center items-center relative">
-        {!aiText && (
-          <img
-            src={userImage}
-            alt=""
-            className="w-[140px] sm:w-[180px] md:w-[200px] 
+
+      {/* right side of home page in lg screen */}
+      <div className="flex flex-col items-center justify-center lg:w-1/2 lg:pr-20">
+        <div className=" flex justify-center items-center relative">
+          {!aiText && (
+            <img
+              src={userImage}
+              alt=""
+              className="w-[140px] sm:w-[180px] md:w-[200px] 
       mix-blend-screen opacity-90"
-          />
-        )}
-        {aiText && (
-          <img
-            src={aiImage}
-            alt=""
-            className="w-[140px] sm:w-[180px] md:w-[200px] 
+            />
+          )}
+          {aiText && (
+            <img
+              src={aiImage}
+              alt=""
+              className="w-[140px] sm:w-[180px] md:w-[200px] 
       mix-blend-screen opacity-95 animate-pulse"
-          />
-        )}
-      </div>
+            />
+          )}
+        </div>
 
-      {(userText || aiText) && (
-        <h1 className="text-white text-[16px] sm:text-[18px] 
+        {(userText || aiText) && (
+          <h1 className="text-white text-[16px] sm:text-[18px] 
             px-4 sm:px-6 py-3 
             bg-white/5 backdrop-blur-md 
             border border-white/10 
@@ -403,10 +415,12 @@ function Home() {
             max-w-[90%] sm:max-w-[600px] 
             text-center shadow-lg 
             flex items-center justify-center">
-          {userText ? userText : aiText}
-        </h1>
-      )}
+            {userText ? userText : aiText}
+          </h1>
+        )}
+      </div>
     </div>
+
 
 
   );

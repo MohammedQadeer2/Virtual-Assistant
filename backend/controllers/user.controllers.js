@@ -52,15 +52,28 @@ export const askToAssistant = async (req, res) => {
 
     // Get user from DB
     const user = await User.findById(req.userId);
+
+    if (!user) {
+      return res.status(404).json({
+        response: "User not found."
+      });
+    }
+
     user.history.push(command);
-    user.save();
+    await user.save();
+
     const userName = user.name;
     const assistantName = user.assistantName;
 
     // Get Gemini response
     const result = await geminiResponse(command, assistantName, userName);
 
-    // Extract JSON from Gemini text
+    if (!result) {
+      return res.status(500).json({
+        response: "Assistant service unavailable."
+      });
+    }
+
     const jsonMatch = result.match(/{[\s\S]*}/);
 
     if (!jsonMatch) {
@@ -70,7 +83,15 @@ export const askToAssistant = async (req, res) => {
     }
 
     const gemResult = JSON.parse(jsonMatch[0]);
+
+    // Make it safe against casing mistakes
     const type = gemResult.type;
+    const userInput =
+      gemResult.userInput ||
+      gemResult.userinput ||
+      command; // fallback to original command
+
+    const response = gemResult.response || "Okay.";
 
     switch (type) {
 
@@ -78,7 +99,7 @@ export const askToAssistant = async (req, res) => {
       case "get-date":
         return res.json({
           type,
-          userInput: gemResult.userinput,
+          userInput: userInput,
           response: `Current date is ${moment().format("YYYY-MM-DD")}`
         });
 
@@ -86,7 +107,7 @@ export const askToAssistant = async (req, res) => {
       case "get-time":
         return res.json({
           type,
-          userInput: gemResult.userinput,
+          userInput: userInput,
           response: `Current time is ${moment().format("hh:mm A")}`
         });
 
@@ -94,7 +115,7 @@ export const askToAssistant = async (req, res) => {
       case "get-day":
         return res.json({
           type,
-          userInput: gemResult.userinput,
+          userInput: userInput,
           response: `Today is ${moment().format("dddd")}`
         });
 
@@ -102,7 +123,7 @@ export const askToAssistant = async (req, res) => {
       case "get-month":
         return res.json({
           type,
-          userInput: gemResult.userinput,
+          userInput: userInput,
           response: `This month is ${moment().format("MMMM")}`
         });
 
@@ -117,8 +138,8 @@ export const askToAssistant = async (req, res) => {
       case "weather-show":
         return res.json({
           type,
-          userInput: gemResult.userinput,
-          response: gemResult.response
+          userInput: gemResult.userInput,
+          response: response
         });
 
       // ================= DEFAULT =================
@@ -129,7 +150,7 @@ export const askToAssistant = async (req, res) => {
     }
 
   } catch (error) {
-    console.log(error);
+    console.error("AskToAssistant Error:", error);
     return res.status(500).json({
       response: "Something went wrong."
     });

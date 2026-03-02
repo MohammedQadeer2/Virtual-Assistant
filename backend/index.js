@@ -21,5 +21,5 @@ app.use("/api/user", userRouter)
 const port = process.env.PORT || 5000
 app.listen(port, ()=> {
     connectDb()
-    console.log("server listening!!")
+    console.log(`server listening!! on port ${port}`)
 })

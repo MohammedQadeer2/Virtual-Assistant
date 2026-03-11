@@ -226,41 +226,12 @@ function Home() {
          px-6
          overflow-hidden"
          >
-      {/* Top Right Buttons */}
-      {/* Desktop Buttons */}
-      <div className="hidden lg:flex absolute top-6 right-6 gap-4 z-20">
-        <button
-          onClick={() => navigate("/customize")}
-          className="px-6 py-2 rounded-full 
-          bg-white/10 backdrop-blur-xl
-          border border-white/20
-          text-white font-semibold
-          hover:bg-white hover:text-black
-          transition-all duration-300
-          hover:scale-105 shadow-lg"
-        >
-          Customize
-        </button>
-
-        <button
-          onClick={handleLogOut}
-          className="px-6 py-2 rounded-full 
-          bg-red-500/20 backdrop-blur-xl
-          border border-red-400/30
-          text-red-400 font-semibold
-          hover:bg-red-500 hover:text-white
-          transition-all duration-300
-          hover:scale-105 shadow-lg"
-        >
-          Logout
-        </button>
-      </div>
 
       {/* Mobile / Tablet Hamburger */}
-      <div className="lg:hidden absolute top-6 right-6 z-20">
+      <div className=" absolute top-6 right-6 z-20">
         <button
           onClick={() => setMenuOpen(!menuOpen)}
-          className="p-3 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-white"
+          className="p-3 rounded-full bg-white/10 backdrop-blur-xl border border-white/20 text-white cursor-pointer"
         >
           ☰
         </button>
@@ -278,20 +249,20 @@ function Home() {
 
         {/* Sidebar */}
         <div
-          className={`absolute top-0 right-0 h-full w-[260px] sm:w-[300px] 
+          className={`absolute top-0 right-0 h-full w-[300px] sm:w-[300px] 
           bg-[#010122]/80 backdrop-blur-2xl 
           border-l border-white/10 
           shadow-2xl 
-          flex flex-col p-6 gap-6
+          flex flex-col pt-1 pl-6 pr-6 gap-2
           transition-transform duration-300
-    ${menuOpen ? "translate-x-0" : "translate-x-full"}`}
-        >~
+          ${menuOpen ? "translate-x-0" : "translate-x-full"}`}
+        >
           {/* Close Button */}
           <div className="flex justify-between items-center">
             <h2 className="text-white text-lg font-semibold">Menu</h2>
             <button
               onClick={() => setMenuOpen(false)}
-              className="text-white text-xl hover:text-red-400 transition"
+              className="text-white text-xl hover:text-red-400 transition cursor-pointer"
             >
               ✕
             </button>

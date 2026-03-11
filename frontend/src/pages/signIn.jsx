@@ -97,7 +97,7 @@ function SignIn() {
       hover:from-blue-600 hover:to-blue-700
       text-white font-semibold 
       transition duration-300 shadow-lg" disabled={loading}
-    > {loading? "loading...": "Sign Up"}
+    > {loading? "loading...": "Sign In"}
     </button>
     <p className="text-[white] text-center alig text-[14px] cursor-pointer "
      onClick={()=>navigate("/signup")} >Want to create new Account? <span className="text-blue-400">Sign up</span> </p>

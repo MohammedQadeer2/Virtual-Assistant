@@ -23,7 +23,7 @@ function App() {
         path="/"
         element={
           !isLoggedIn ? (
-            <Navigate to="/signin" />
+            <Navigate to="/signup" />
           ) : !isCustomized ? (
             <Navigate to="/customize" />
           ) : (
@@ -47,14 +47,14 @@ function App() {
       <Route
         path="/customize"
         element={
-          !isLoggedIn ? <Navigate to="/signin" /> : <Customize />
+          !isLoggedIn ? <Navigate to="/signup" /> : <Customize />
         }
       />
 
       <Route
         path="/customize2"
         element={
-          !isLoggedIn ? <Navigate to="/signin" /> : <Customize2 />
+          !isLoggedIn ? <Navigate to="/signup" /> : <Customize2 />
         }
       />
 

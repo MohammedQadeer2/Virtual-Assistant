@@ -17,6 +17,7 @@ function Home() {
   const recognitionRef = useRef(null)
   const isRecognizingRef = useRef(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const [profileOpen, setProfileOpen] = useState(false) //changes
   const synth = window.speechSynthesis
   const handleLogOut = async () => {
     try {
@@ -225,8 +226,34 @@ function Home() {
          justify-center
          px-6
          overflow-hidden"
-         >
+    >
+      {/* change from line 231-256 */}
+      {/* Profile Icon */} 
+      <div className="absolute top-6 left-6 z-20">
+        <button
+          onClick={() => setProfileOpen(!profileOpen)}
+          className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-lg 
+          border border-white/20 flex items-center justify-center 
+          text-white text-lg hover:bg-white/20 transition"
+        >
+          👤
+        </button>
 
+        {profileOpen && (
+          <div className="absolute mt-3 w-[220px] bg-[#010122] border border-white/10 
+               rounded-xl shadow-xl p-4 text-white">
+
+            <p className="text-sm text-gray-400">Name</p>
+            <p className="font-semibold">{userData?.name}</p>
+
+            <div className="h-[1px] bg-white/10 my-2"></div>
+
+            <p className="text-sm text-gray-400">Email</p>
+            <p className="text-sm">{userData?.email}</p>
+
+          </div>
+        )}
+      </div>
 
       {/* Mobile / Tablet Hamburger */}
       <div className=" absolute top-6 right-6 z-20">

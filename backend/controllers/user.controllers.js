@@ -59,7 +59,7 @@ export const askToAssistant = async (req, res) => {
       });
     }
 
-    user.history.push(command);
+    user.history.unshift(command);
     await user.save();
 
     const userName = user.name;

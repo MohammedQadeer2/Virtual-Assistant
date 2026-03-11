@@ -227,6 +227,7 @@ function Home() {
          overflow-hidden"
          >
 
+
       {/* Mobile / Tablet Hamburger */}
       <div className=" absolute top-6 right-6 z-20">
         <button
@@ -249,11 +250,11 @@ function Home() {
 
         {/* Sidebar */}
         <div
-          className={`absolute top-0 right-0 h-full w-[300px] sm:w-[300px] 
+          className={`absolute top-0 right-0 h-full w-[260px] sm:w-[400px] 
           bg-[#010122]/80 backdrop-blur-2xl 
           border-l border-white/10 
           shadow-2xl 
-          flex flex-col pt-1 pl-6 pr-6 gap-2
+          flex flex-col p-6 gap-3
           transition-transform duration-300
           ${menuOpen ? "translate-x-0" : "translate-x-full"}`}
         >
@@ -299,7 +300,7 @@ function Home() {
 
           {/* History Section */}
           {/* History Section */}
-          <div className="flex flex-col gap-3 max-h-[490px] overflow-y-auto pr-2 custom-scroll">
+          <div className="flex flex-col gap-3 max-h-[530px] overflow-y-auto pr-2 custom-scroll">
 
             <h3 className="text-white font-semibold text-sm tracking-wide sticky top-0 bg-[#010122] py-1">
               History

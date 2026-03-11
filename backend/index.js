@@ -10,8 +10,9 @@ import geminiResponse from "./Gemini.js";
 const app = express();
 
 app.use(cors({
-  origin: "https://virtual-assistant-55r7.onrender.com",
-  credentials: true
+  origin: "http://localhost:5173",
+  credentials: true,
+  secure: false
 }));
 app.use(express.json())
 app.use(cookieParser())

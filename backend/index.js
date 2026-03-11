@@ -10,7 +10,7 @@ import geminiResponse from "./Gemini.js";
 const app = express();
 
 app.use(cors({
-  origin: true,
+  origin: "https://virtual-assistant-55r7.onrender.com",
   credentials: true
 }));
 app.use(express.json())

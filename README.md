@@ -133,7 +133,6 @@ Virtual-Assistant/
 │   ├── Gemini.js
 │   └── index.js
 └── README.md
-
 ---
 
 🔐 Authentication Flow

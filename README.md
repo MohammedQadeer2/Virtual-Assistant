@@ -114,26 +114,8 @@ Cloud Services
 ---
 
 📁 Project Structure
-'''
-Virtual-Assistant/
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── context/
-│   │   ├── assets/
-│   │   └── App.jsx
-│   └── package.json
-├── backend/
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   ├── config/
-│   ├── middleware/
-│   ├── Gemini.js
-│   └── index.js
-└── README.md
-'''
+<img width="126" height="272" alt="image" src="https://github.com/user-attachments/assets/67b2d098-4009-456b-9b33-3c52509b76d2" />
+
 ---
 
 🔐 Authentication Flow

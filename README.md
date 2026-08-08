@@ -114,7 +114,7 @@ Cloud Services
 ---
 
 📁 Project Structure
-
+'''
 Virtual-Assistant/
 ├── frontend/
 │   ├── src/
@@ -133,6 +133,7 @@ Virtual-Assistant/
 │   ├── Gemini.js
 │   └── index.js
 └── README.md
+'''
 ---
 
 🔐 Authentication Flow
